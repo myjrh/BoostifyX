@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login - BoostifyX</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+<h2>Login / Signup</h2>
+
+<input type="email" id="email" placeholder="Email">
+
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="loginUser()">Login</button>
+
+<button onclick="signupUser()">Create Account</button>
+
+<p id="msg"></p>
+
+</div>
+
+
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+signInWithEmailAndPassword,
+createUserWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import {
+doc,
+setDoc,
+getDocs,
+collection
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+
+// LOGIN
+async function loginUser(){
+
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+try{
+
+await signInWithEmailAndPassword(auth,email,password);
+
+window.location.href = "dashboard.html";
+
+}catch(error){
+
+document.getElementById("msg").innerText = error.message;
+
+}
+
+}
+
+
+// SIGNUP
+async function signupUser(){
+
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+try{
+
+const userCredential = await createUserWithEmailAndPassword(auth,email,password);
+
+const uid = userCredential.user.uid;
+
+
+// Generate User ID
+const usersRef = collection(db,"users");
+
+const snapshot = await getDocs(usersRef);
+
+const userNumber = snapshot.size + 1001;
+
+const userId = "BX" + userNumber;
+
+
+// Save user in Firestore
+await setDoc(doc(db,"users",uid),{
+
+email:email,
+userid:userId,
+balance:0,
+referralCode:userId+"REF",
+created:new Date()
+
+});
+
+
+window.location.href="dashboard.html";
+
+}catch(error){
+
+document.getElementById("msg").innerText = error.message;
+
+}
+
+}
+
+
+window.loginUser = loginUser;
+window.signupUser = signupUser;
+
+</script>
+
+</body>
+</html>

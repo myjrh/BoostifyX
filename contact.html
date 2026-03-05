@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Customer Support - BoostifyX</title><link rel="stylesheet" href="style.css"></head><body><header class="header">
+<h2>Customer Support</h2>
+<a href="index.html" class="btn">Home</a>
+</header><section class="dashboard"><div class="card"><h3>Contact Support</h3><textarea id="message" placeholder="Write your message here..." rows="5"></textarea><button onclick="sendMessage()">Send Message</button>
+
+</div></section><script>
+
+function sendMessage(){
+
+const message=document.getElementById("message").value;
+
+if(!message){
+
+alert("Write message first");
+return;
+
+}
+
+const whatsappURL=`https://wa.me/6282298431688?text=${encodeURIComponent(message)}`;
+
+window.open(whatsappURL,"_blank");
+
+}
+
+</script></body>
+</html>

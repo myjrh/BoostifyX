@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Panel</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div id="adminLogin" class="login-container">
+
+<h2>Admin Login</h2>
+
+<input type="text" id="adminUser" placeholder="Username">
+
+<input type="password" id="adminPass" placeholder="Password">
+
+<button onclick="adminLogin()">Login</button>
+
+<p id="adminMsg"></p>
+
+</div>
+
+
+<div id="adminPanel" style="display:none">
+
+<header class="header">
+
+<h2>Admin Panel</h2>
+
+</header>
+
+
+<section class="dashboard">
+
+<div class="card">
+
+<h3>Add Service</h3>
+
+<input id="sName" placeholder="Service Name">
+
+<input id="sRate" placeholder="Rate">
+
+<input id="sMin" placeholder="Min">
+
+<input id="sMax" placeholder="Max">
+
+<input id="sBuy" placeholder="Buying Price">
+
+<button onclick="addService()">Add Service</button>
+
+</div>
+
+
+<div class="card">
+
+<h3>Deposits</h3>
+
+<ul id="depositList"></ul>
+
+</div>
+
+
+<div class="card">
+
+<h3>Orders</h3>
+
+<ul id="orderList"></ul>
+
+</div>
+
+</section>
+
+</div>
+
+
+<script type="module">
+
+import { db } from "./firebase.js";
+
+import {
+collection,
+getDocs,
+updateDoc,
+doc,
+addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+
+const adminUser="md admin";
+const adminPass="1316781hfw1";
+
+
+// ADMIN LOGIN
+function adminLogin(){
+
+const user=document.getElementById("adminUser").value;
+const pass=document.getElementById("adminPass").value;
+
+if(user===adminUser && pass===adminPass){
+
+document.getElementById("adminLogin").style.display="none";
+
+document.getElementById("adminPanel").style.display="block";
+
+loadDeposits();
+loadOrders();
+
+}else{
+
+document.getElementById("adminMsg").innerText="Wrong credentials";
+
+}
+
+}
+
+
+// ADD SERVICE
+async function addService(){
+
+const name=document.getElementById("sName").value;
+const rate=document.getElementById("sRate").value;
+const min=document.getElementById("sMin").value;
+const max=document.getElementById("sMax").value;
+const buyingPrice=document.getElementById("sBuy").value;
+
+await addDoc(collection(db,"services"),{
+
+name,
+rate:Number(rate),
+min:Number(min),
+max:Number(max),
+buyingPrice:Number(buyingPrice)
+
+});
+
+alert("Service Added");
+
+}
+
+
+// LOAD DEPOSITS
+async function loadDeposits(){
+
+const snapshot=await getDocs(collection(db,"deposits"));
+
+const list=document.getElementById("depositList");
+
+snapshot.forEach(async(docSnap)=>{
+
+const dep=docSnap.data();
+
+if(dep.status==="pending"){
+
+const li=document.createElement("li");
+
+li.innerHTML=dep.userId+" - ₹"+dep.amount+
+` <button onclick="approveDeposit('${docSnap.id}','${dep.userId}',${dep.amount})">Approve</button>`;
+
+list.appendChild(li);
+
+}
+
+});
+
+}
+
+
+// APPROVE DEPOSIT
+async function approveDeposit(id,userId,amount){
+
+const depRef=doc(db,"deposits",id);
+
+await updateDoc(depRef,{status:"approved"});
+
+alert("Deposit approved");
+
+}
+
+
+// LOAD ORDERS
+async function loadOrders(){
+
+const snapshot=await getDocs(collection(db,"orders"));
+
+const list=document.getElementById("orderList");
+
+snapshot.forEach(docSnap=>{
+
+const order=docSnap.data();
+
+const li=document.createElement("li");
+
+li.innerHTML=order.userId+" - "+order.service+
+` <button onclick="completeOrder('${docSnap.id}','${order.userId}')">Complete</button>`;
+
+list.appendChild(li);
+
+});
+
+}
+
+
+// COMPLETE ORDER
+async function completeOrder(id,userId){
+
+const orderRef=doc(db,"orders",id);
+
+await updateDoc(orderRef,{status:"completed"});
+
+await addDoc(collection(db,"notifications"),{
+
+userId:userId,
+message:"Your order is completed",
+date:new Date()
+
+});
+
+alert("Order completed");
+
+}
+
+
+window.adminLogin=adminLogin;
+window.addService=addService;
+window.approveDeposit=approveDeposit;
+window.completeOrder=completeOrder;
+
+</script>
+
+</body>
+</html>
