@@ -1,0 +1,277 @@
+/* ============================= /
+/ BoostifyX V2 Global Styles /
+/ ============================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#0f172a;
+color:white;
+}
+
+/* ============================= /
+/ Buttons /
+/ ============================= */
+
+.btn{
+background:#22c55e;
+padding:10px 18px;
+border-radius:6px;
+text-decoration:none;
+color:white;
+display:inline-block;
+}
+
+button{
+cursor:pointer;
+}
+
+/* ============================= /
+/ Header /
+/ ============================= */
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 20px;
+background:#020617;
+border-bottom:1px solid #1e293b;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+color:#22c55e;
+}
+
+/* ============================= /
+/ Sticky Topbar /
+/ ============================= */
+
+.topbar{
+position:sticky;
+top:0;
+background:#020617;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 20px;
+border-bottom:1px solid #1e293b;
+z-index:100;
+}
+
+.top-actions a{
+margin-left:10px;
+padding:8px 14px;
+border-radius:6px;
+text-decoration:none;
+color:white;
+}
+
+.deposit-btn{
+background:#22c55e;
+}
+
+.support-btn{
+background:#2563eb;
+}
+
+/* ============================= /
+/ Dashboard Layout /
+/ ============================= */
+
+.dashboard-layout{
+display:flex;
+min-height:100vh;
+}
+
+/* ============================= /
+/ Sidebar /
+/ ============================= */
+
+.sidebar{
+width:200px;
+background:#020617;
+padding-top:20px;
+border-right:1px solid #1e293b;
+}
+
+.sidebar a{
+display:block;
+padding:12px 20px;
+color:white;
+text-decoration:none;
+font-size:15px;
+}
+
+.sidebar a:hover{
+background:#1e293b;
+}
+
+/* ============================= /
+/ Main Content /
+/ ============================= */
+
+.main{
+flex:1;
+padding:20px;
+}
+
+/* ============================= /
+/ Cards /
+/ ============================= */
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+.card h3{
+margin-bottom:10px;
+}
+
+/* ============================= /
+/ Stats Cards /
+/ ============================= */
+
+.stats{
+display:flex;
+gap:20px;
+margin-bottom:20px;
+}
+
+.stats .card{
+flex:1;
+text-align:center;
+font-size:18px;
+}
+
+/* ============================= /
+/ Inputs /
+/ ============================= */
+
+input,select,textarea{
+width:100%;
+padding:10px;
+margin-top:10px;
+border:none;
+border-radius:6px;
+background:#020617;
+color:white;
+}
+
+/* ============================= /
+/ Order Panel /
+/ ============================= */
+
+.order-card button{
+margin-top:12px;
+padding:10px;
+background:#22c55e;
+border:none;
+border-radius:6px;
+color:white;
+width:100%;
+}
+
+/* ============================= /
+/ Lists /
+/ ============================= */
+
+ul{
+list-style:none;
+}
+
+li{
+padding:8px 0;
+border-bottom:1px solid #334155;
+font-size:14px;
+}
+
+/* ============================= /
+/ Login Page /
+/ ============================= */
+
+.login-container{
+max-width:360px;
+margin:120px auto;
+background:#1e293b;
+padding:30px;
+border-radius:10px;
+text-align:center;
+}
+
+.login-container h2{
+margin-bottom:20px;
+}
+
+.login-container input{
+margin-bottom:10px;
+}
+
+.login-container button{
+width:100%;
+padding:12px;
+margin-top:10px;
+background:#22c55e;
+border:none;
+border-radius:6px;
+color:white;
+}
+
+/* ============================= /
+/ Deposit Page /
+/ ============================= */
+
+#qrBox{
+margin-top:20px;
+text-align:center;
+}
+
+#qrBox img{
+width:200px;
+}
+
+/* ============================= /
+/ Mobile Responsive /
+/ ============================= */
+
+@media(max-width:768px){
+
+.dashboard-layout{
+flex-direction:column;
+}
+
+.sidebar{
+width:100%;
+display:flex;
+overflow-x:auto;
+}
+
+.sidebar a{
+flex:1;
+text-align:center;
+font-size:14px;
+}
+
+.stats{
+flex-direction:column;
+}
+
+.main{
+padding:15px;
+}
+
+.login-container{
+margin:60px 20px;
+}
+
+}
